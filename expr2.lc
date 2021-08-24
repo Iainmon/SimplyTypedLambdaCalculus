@@ -1,7 +1,25 @@
-M := (\q.q q)
-Moc := (\y.y y)
-Y := (\f.(f:(* -> *)) f f f f f f f f f f f f f f f f f f f)
 
-(\y.(M Moc)) (\x.(Moc M))
-Q := M (Y Y Y M Y M Y M Y M)
-result (Q Q Q Q Q Q)
+
+cons := (\h.(\l.(\con.(con h l))));
+head := (\l.l (\a.(\b.a)));
+tail := (\l.l (\a.(\b.b)));
+mylist := (cons x (cons y nil));
+pair of (head mylist) (tail mylist);
+
+
+(\x -> (x:Type)) (y:Type);
+
+nil := nil;
+
+id := (lambda x -> x);
+
+id nil; -- hello
+
+(lambda x -> x);
+
+flip := (lambda a ->
+  (lambda b ->
+    (lambda c ->
+      (a c b)
+    )
+  ));

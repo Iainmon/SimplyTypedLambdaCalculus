@@ -5,7 +5,7 @@ import Parser
 import Typing
 import Evaluation
 
-import Data.List (intercalate)
+import Data.List (intercalate, intersperse)
 
 x = "x"
 t = "t"
@@ -49,6 +49,9 @@ debug :: String -> IO ()
 debug file = do
   content <- readFile file
   let source = content
+  let cleaned = cleanSource source
+  mapM_ putStrLn $ intersperse "\n" $ map show $ zip cleaned (map parse' cleaned)
+  putStrLn $ show $ parseProgram content
   let parsed = unjust' $ parseProgram content
   let typeChecked = validateProgram parsed
   let isTypeCorrect = not $ null typeChecked

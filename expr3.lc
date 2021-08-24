@@ -2,7 +2,7 @@
 T := (\a.(\b.(a)));
 K := T;
 S := (\x.(\y.(\z.((x z)(y z)))));
-I := (\x.x);
+I := (\x.(x));
 F := S K;
 
 cons := (\h.(\l.(\con.(con h l))));
@@ -11,10 +11,16 @@ tail := (\l.l (\a.(\b.b)));
 mylist := (cons x (cons y nil));
 pair of (head mylist) (tail mylist);
 
-flip := (\a.(\b.(\c.(a c b))));
+flip := (\a -> (
+  \b -> 
+    (c -> (a c b))
+  ));
 
-(\x.x:Type) (y:Type);
 
-nil := nil; -- Circular reference
+(\x -> (x:Type)) (y:Type);
+
+nil := nil;
+
+id := (\x -> x);
 
 nil

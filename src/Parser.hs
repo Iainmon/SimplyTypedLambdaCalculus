@@ -20,7 +20,7 @@ data Lit
 
 lexer :: Tok.TokenParser ()
 lexer = Tok.makeTokenParser style
-  where ops   = ["λ", "->"]
+  where ops   = ["λ", "->", "lambda"]
         names = []
         style = emptyDef {Tok.reservedOpNames = ops,
                           Tok.reservedNames   = names,
@@ -94,7 +94,7 @@ optionalTyping = try typing <|> variable
 
 lambda :: Parser Expr
 lambda = do
-  reservedOp "λ" <|> reservedOp "\\"
+  reservedOp "λ" <|> reservedOp "\\" <|> reservedOp "lambda"
   args <- many1 identifier
   reservedOp "." <|> reservedOp "->"
   body <- expr
@@ -102,8 +102,10 @@ lambda = do
 
 term :: Parser Expr
 term =  parens expr
-    <|> optionalTyping
     <|> lambda
+    <|> optionalTyping
+
+    
 
 
     -- <|> variable
