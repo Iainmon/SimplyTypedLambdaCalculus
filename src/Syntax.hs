@@ -51,7 +51,7 @@ lamParam p = "\\" ++ p ++ "." -- "λ" ++ p ++ "." -- replit sux
 
 instance Show Expr where
   show (App l r t) = show l ++ " " ++ show r
-  show (Lam v b t) = "(" ++ lamParam v ++ show (domain $ unjust $ t) ++ '.': show b ++ ")" ++ showTyping t
+  show (Lam v b t) = "(" ++ lamParam (v ++ ':':show (domain $ unjust $ t)) ++ show b ++ ")" ++ showTyping t
   show (Lit v t)   = v ++ showTyping t
 
 showTypeless (App l r _) = on (\a b -> "(" ++ a ++ " " ++ b ++ ")") showTypeless l r

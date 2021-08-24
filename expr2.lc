@@ -1,0 +1,7 @@
+M := (\q.q q)
+Moc := (\y.y y)
+Y := (\f.(f:(* -> *)) f f f f f f f f f f f f f f f f f f f)
+
+(\y.(M Moc)) (\x.(Moc M))
+Q := M (Y Y Y M Y M Y M Y M)
+result (Q Q Q Q Q Q)
