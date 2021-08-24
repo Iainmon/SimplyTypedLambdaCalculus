@@ -24,7 +24,7 @@ main :: IO ()
 main = prog
 main' = do
   content <- readFile "expr.lc"
-  let fileLines = filter (not . null) $ lines content
+  let fileLines = cleanSource content
   let parseTrees = map parse fileLines
   let typeChecks = map (>>= typeCheck) parseTrees
   let types = map (>>= return . typeof) typeChecks
@@ -48,7 +48,7 @@ cenc n = Lam "f" (Lam "x" (cenc' n) cet) cet
 debug :: String -> IO ()
 debug file = do
   content <- readFile file
-  let source = (unlines . filter (not . null) . lines) content
+  let source = content
   let parsed = unjust' $ parseProgram content
   let typeChecked = validateProgram parsed
   let isTypeCorrect = not $ null typeChecked
@@ -83,7 +83,7 @@ debug file = do
   putStrLn $ unlines $ zipWith ((++) . (++" | ")) prettyValFrames prettyValTypeFrames
 
   putStrLn "-- Program Output --"
-  putStrLn $ "Output Length: " ++ (show $ length (showTypeless result))
   putStrLn $ showTypeless result
   putStrLn $ "Result Type: " ++ (show $ typeof result)
-  
+  putStrLn ""
+  putStrLn $ "Output Length: " ++ (show $ length (showTypeless result))

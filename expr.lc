@@ -25,3 +25,7 @@ clean := (\z.(\f.(\x.(z f x))))
 
 result (add onehund (clean (add onehund onehund)))
 
+map := (\f -> (\lis -> ))
+
+prim nil
+map prim (cons True (cons False nil))

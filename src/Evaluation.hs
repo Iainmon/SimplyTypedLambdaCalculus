@@ -1,5 +1,7 @@
 module Evaluation where
 
+import Data.List
+
 import Syntax
 import Parser
 import Typing
@@ -8,6 +10,9 @@ data Instruction = Assign Assignment | Eval Expr deriving (Show,Eq)
 
 type Binding = (Name,Expr)
 type Bindings = [Binding]
+
+splitWhen :: (a -> Bool) -> [a] -> [[a]]
+splitWhen pred = groupBy (const (not . pred))
 
 binding :: Name -> Bindings -> Maybe Expr
 binding c [] = Nothing
@@ -31,9 +36,16 @@ parseOk (Left _) = False
 parseOk (Right _) = True
 right (Right x) = x
 
+dropComment []          = []
+dropComment ('-':'-':_) = []
+dropComment (x:xs)      = x : dropComment xs
+
+removeNewlines = filter (/='\n')
+cleanSource = filter (any (/=' ')) . map (filter (/=';')) . splitWhen (==';') . removeNewlines . unlines . map dropComment . lines
+
 parseProgram :: String -> Maybe [Instruction]
 parseProgram source = mapM parseLine progLines
-  where progLines = (filter (not . null) $ lines source)
+  where progLines = (cleanSource source)
         parseLine line | parseOk assignmentParse = Just $ Assign $ right assignmentParse
                        | parseOk expressionPase  = Just $ Eval $ right expressionPase
                        | otherwise = Nothing
