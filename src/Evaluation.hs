@@ -1,6 +1,8 @@
 module Evaluation where
 
 import Data.List
+import qualified Data.Map as M
+import Data.Map (Map)
 
 import Syntax
 import Parser
@@ -10,6 +12,7 @@ data Instruction = Assign Assignment | Eval Expr deriving (Show,Eq)
 
 type Binding = (Name,Expr)
 type Bindings = [Binding]
+type Bindings' = (Bindings, Map Name Int)
 
 splitWhen :: (a -> Bool) -> [a] -> [[a]]
 splitWhen pred = groupBy (const (not . pred))
@@ -17,6 +20,18 @@ splitWhen pred = groupBy (const (not . pred))
 binding :: Name -> Bindings -> Maybe Expr
 binding c [] = Nothing
 binding c ((var,val):binds) = if c == var then Just val else binding c binds
+
+nameOccruances :: Name -> Map Name Int -> Int
+nameOccruances = M.findWithDefault 0 
+
+newBinding :: Name -> Bindings' -> Name
+newBinding v counts | occur == 0 = v
+                    | otherwise  = v ++ show occur
+  where occur = nameOccruances v m
+        m = snd counts
+
+incrementOccruance :: Name -> Map Name Int -> Map Name Int
+incrementOccruance v m = M.insert v ((+1) $ nameOccruances v m) m
 
 eval' :: Expr -> Bindings -> Expr
 eval' (App f x t) binds = case eval' f binds of
