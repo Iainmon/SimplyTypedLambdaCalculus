@@ -4,6 +4,11 @@ import Syntax
 import Parser
 import Typing
 import Evaluation
+import Data.Graph 
+import Data.Graph.DGraph
+import Data.Graph.UGraph
+import Data.Graph.Types
+import Data.Graph.Visualize
 
 import Data.List (intercalate, intersperse)
 
@@ -21,7 +26,7 @@ ycom = "(\\f.(\\x.f (x x))(\\x.f (x x)))"
 tt = "((\\x.x(\\z.z))(\\y.y))"
 tt' = "(\\x.x x)(\\y.y y)"
 main :: IO ()
-main = prog
+main = makeGraph
 main' = do
   content <- readFile "expr.lc"
   let fileLines = cleanSource content
@@ -90,3 +95,26 @@ debug file = do
   putStrLn $ "Result Type: " ++ (show $ typeof result)
   putStrLn ""
   putStrLn $ "Output Length: " ++ (show $ length (showTypeless result))
+
+
+
+foundationUniverse :: DGraph String ()
+foundationUniverse = fromArcsList
+    [ "Helicon" --> "Nishaya"
+    , "Helicon" --> "Wencory"
+    , "Nishaya" --> "Wencory"
+    , "Wencory" --> "Getorin"
+    , "Wencory" --> "Cinna"
+    , "Wencory" --> "Lystena"
+    , "Lystena" --> "Helicon"
+    , "Cinna"   --> "Florina"
+    , "Florina" --> "Nishaya"
+    , "Florina" --> "Derowd"
+    , "Derowd"  --> "Cinna"
+    , "Derowd"  --> "Lystena"
+    ]
+  
+makeGraph :: IO ()
+makeGraph = do
+  plotUGraphPng (toUndirected foundationUniverse) "/home/runner/EmotionalWingedError/foundation"
+  return ()
