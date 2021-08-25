@@ -9,6 +9,8 @@ import Parser
 import Typing
 
 data Instruction = Assign Assignment | Eval Expr deriving (Show,Eq)
+uninstruction (Assign (name,val)) = Lam name val (Just $ Type "assignment")
+uninstruction (Eval expr)         = expr
 
 type Binding = (Name,Expr)
 type Bindings = [Binding]

@@ -9,8 +9,14 @@ import Data.Graph.DGraph
 import Data.Graph.UGraph
 import Data.Graph.Types
 import Data.Graph.Visualize
+import qualified IainVisualize as IV
+-- import Data.Graph.Visualize (toDirectedDot)
+
+import Data.Function
 
 import Data.List (intercalate, intersperse)
+
+indexify list = zip [0..length list] list
 
 x = "x"
 t = "t"
@@ -50,6 +56,7 @@ cenc n = Lam "f" (Lam "x" (cenc' n) cet) cet
         cenc' n = App f (cenc' (n-1)) cet
         f = Lit "f" cet
         cet = Just $ Type "CE"
+
 debug :: String -> IO ()
 debug file = do
   content <- readFile file
@@ -96,7 +103,31 @@ debug file = do
   putStrLn ""
   putStrLn $ "Output Length: " ++ (show $ length (showTypeless result))
 
+  let vals = map snd assigns
+  -- let connectedList = foldl (++) [] $ map (consConnectedList . uninstruction) instructions
+  let connectedLists = map (consConnectedList . uninstruction) instructions
+  mapM_ (\p -> saveGraphFromEdgeList (snd p) (show $ fst p)) $ indexify connectedLists
+  mapM_ (putStrLn . showTypeless) $ map uninstruction instructions
+  mapM_ (putStrLn . show) connectedLists
+  -- let connectedList = (++) (consConnectedList result) $ foldl (++) [] $ map consConnectedList vals
 
+saveGraphFromEdgeList :: [(String,String)] -> String -> IO ()
+saveGraphFromEdgeList pairs title = do
+  let valGraph = insertEdgePairs pairs empty -- (empty :: DGraph String ())
+  let graphOutput = "./graphs/" ++ title
+  IV.plotDGraphPng valGraph graphOutput
+  putStrLn $ IV.printGraph $ IV.toDirectedDot False valGraph
+  putStrLn $ "Graph saved to " ++ graphOutput ++ ".png"
+
+exprGraphLabel (Lit v t)   = showTypeless (Lit v t)
+exprGraphLabel abs@(Lam v b t) | typeof abs == Type "assignment" = v
+                               | otherwise                       = "λ" ++ v ++ " : "++ show (domain $ unjust' t)
+exprGraphLabel (App l r t) = "(" ++ exprGraphLabel l ++ ") (" ++ exprGraphLabel r ++ ") : " ++ show (unjust' t)
+
+consConnectedList (Lit v t) = []
+consConnectedList (Lam v b t) = (exprGraphLabel (Lam v b t),exprGraphLabel b) : consConnectedList b
+consConnectedList (App l r t) = (++) [(selfLabel,exprGraphLabel l),(selfLabel,exprGraphLabel r)] $ on (++) consConnectedList l r
+  where selfLabel = exprGraphLabel (App l r t)
 
 foundationUniverse :: DGraph String ()
 foundationUniverse = fromArcsList
@@ -116,5 +147,5 @@ foundationUniverse = fromArcsList
   
 makeGraph :: IO ()
 makeGraph = do
-  plotUGraphPng (toUndirected foundationUniverse) "/home/runner/EmotionalWingedError/foundation"
+  plotUGraphPng (toUndirected foundationUniverse) "./foundation"
   return ()

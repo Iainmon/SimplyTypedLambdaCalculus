@@ -1,0 +1,4 @@
+id := (lambda x -> x);
+T := (lambda a -> (lambda b -> (a)));
+
+T id
