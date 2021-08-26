@@ -13,6 +13,6 @@ cons := (lambda head -> (lambda tail -> (lambda con -> con head tail)));
 
 -- seq a b c d
 
-L := seq a b;
+L := seq a b c d e f T id cons T;
 
 L;

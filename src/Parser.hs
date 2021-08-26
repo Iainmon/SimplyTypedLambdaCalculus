@@ -143,6 +143,6 @@ simplifyAST _ = Nothing
 parse' :: String -> Either ParseError Expr
 parse' s = parseExpr s
 
-
+unsafeParse = unjust' . parse
 
 parse = simplifyAST . parse'

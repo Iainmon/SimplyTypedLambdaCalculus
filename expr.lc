@@ -1,31 +1,26 @@
 
-T := (\a.(\b.(a)))
-K := T
-S := (\x.(\y.(\z.((x z)(y z)))))
-I := (\x.x)
-F := S K
 
-cons := (\h.(\l.(\con.(con h l))))
-head := (\l.l (\a.(\b.a)))
-tail := (\l.l (\a.(\b.b)))
-mylist := (cons x (cons y nil))
-pair of (head mylist) (tail mylist)
-
-flip := (\a.(\b.(\c.(a c b))))
-
-(\x.x:Type) (y:Type)
+cons := (\h.(\l.(\con.(con h l))));
+head := (\l.l (\a.(\b.a)));
+tail := (\l.l (\a.(\b.b)));
+mylist := (cons x (cons y nil));
+pair of (head mylist) (tail mylist);
 
 
-zero := (\h.(\g.g))
-one := (\f.(\x.(f x)))
-addone := (\i.(\f.(\x.(f (i f x)))))
-add := (\i.(\j.(\q.(\w.((j q) (i q w))))))
-onehund := (\f.(\x.(f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f (f x))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
-clean := (\z.(\f.(\x.(z f x))))
+(\x -> (x:Type)) (y:Type);
 
-result (add onehund (clean (add onehund onehund)))
+nil := nil;
 
-map := (\f -> (\lis -> ))
+id := (lambda x -> x);
 
-prim nil
-map prim (cons True (cons False nil))
+id nil; -- hello
+
+(lambda x -> x);
+
+flip := (lambda a ->
+  (lambda b ->
+    (lambda c ->
+      (a c b)
+    )
+  ));
+  

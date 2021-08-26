@@ -90,3 +90,10 @@ putStrLn $ showLisp $ cenc 100 -- chuch encoding, shown in lisp syntax
     )
 )
 ```
+
+## Instructions
+
+```haskell
+ghci> :l Main
+ghci> debug "exprgraph.lc"
+```

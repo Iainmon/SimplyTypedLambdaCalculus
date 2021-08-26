@@ -6,6 +6,8 @@ import Typing
 import Evaluation
 import Serialize
 
+import System.Process
+
 import Data.Graph 
 import Data.Graph.DGraph
 import Data.Graph.UGraph
@@ -111,6 +113,7 @@ debug file = do
   -- mapM_ (\p -> saveGraphFromEdgeList (snd p) (show $ fst p)) $ indexify connectedLists
   -- mapM_ (putStrLn . showTypeless) $ map uninstruction instructions
   -- mapM_ (putStrLn . show) connectedLists
+  spawnProcess "/usr/local/bin/python3.9" ["print_lambda_graph.py", encode result]
   return () 
 
 
@@ -153,3 +156,5 @@ makeGraph :: IO ()
 makeGraph = do
   plotUGraphPng (toUndirected foundationUniverse) "./foundation"
   return ()
+
+jsonify = encode . unsafeParse
