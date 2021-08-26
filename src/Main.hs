@@ -7,6 +7,8 @@ import Evaluation
 import Serialize
 
 import System.Process
+import System.Environment
+
 
 import Data.Graph 
 import Data.Graph.DGraph
@@ -36,7 +38,7 @@ ycom = "(\\f.(\\x.f (x x))(\\x.f (x x)))"
 tt = "((\\x.x(\\z.z))(\\y.y))"
 tt' = "(\\x.x x)(\\y.y y)"
 main :: IO ()
-main = makeGraph
+main = runInterpreter
 main' = do
   content <- readFile "expr.lc"
   let fileLines = cleanSource content
@@ -163,3 +165,11 @@ makeGraph = do
   return ()
 
 jsonify = encode . unsafeParse
+
+
+runInterpreter :: IO ()
+runInterpreter = do
+  args <- getArgs
+  let filename = head args
+  debug filename
+  return ()
