@@ -9,6 +9,8 @@ import Control.Concurrent
 import           Data.GraphViz
 import           Data.GraphViz.Types
 import           Data.GraphViz.Attributes.Complete
+import           Data.GraphViz.Attributes.Colors
+import           Data.GraphViz.Attributes.Colors.Brewer
 import Data.GraphViz.Printing
 import           Data.Hashable
 import qualified Data.Text.Lazy                    as TL
@@ -99,7 +101,18 @@ sensibleDotParams directed edgeLabeled = nonClusteredParams
            Overlap ScaleOverlaps
           -- , Layout Patchwork
           ]
-        , EdgeAttrs [FontColor (X11Color DarkGreen)]
+        , NodeAttrs [
+             Shape Circle
+            , Style [SItem Filled []]
+            , FillColor [(toWC (X11Color Orange))] 
+            -- , BgColor (toWC $ toColor (Brewer (BScheme Spectral 4)))
+            -- , BgColor [(toWC (X11Color Orange))]
+            , Color [(toWC (X11Color Gray))]
+          ]
+        , EdgeAttrs [
+             FontColor (X11Color DarkGreen)
+            , ArrowHead (AType [(noMods,NoArrow)])
+          ]
         ]
     , fmtEdge = edgeFmt
     }

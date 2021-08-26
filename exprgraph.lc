@@ -1,4 +1,18 @@
 id := (lambda x -> x);
 T := (lambda a -> (lambda b -> (a)));
 
-T id
+T id;
+
+-- nil := nil;
+
+cons := (lambda head -> (lambda tail -> (lambda con -> con head tail)));
+
+-- alphabet := cons a (cons b (cons c (cons d (cons e (cons f (cons g (cons h (cons i (cons j nil)))))))));
+
+(lambda x y -> x x);
+
+-- seq a b c d
+
+L := seq a b;
+
+L;

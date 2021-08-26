@@ -106,11 +106,13 @@ debug file = do
   let vals = map snd assigns
   -- let connectedList = foldl (++) [] $ map (consConnectedList . uninstruction) instructions
   let connectedLists = map (consConnectedList . uninstruction) instructions
-  mapM_ (\p -> saveGraphFromEdgeList (snd p) (show $ fst p)) $ indexify connectedLists
-  mapM_ (putStrLn . showTypeless) $ map uninstruction instructions
-  mapM_ (putStrLn . show) connectedLists
-  -- let connectedList = (++) (consConnectedList result) $ foldl (++) [] $ map consConnectedList vals
+  -- mapM_ (\p -> saveGraphFromEdgeList (snd p) (show $ fst p)) $ indexify connectedLists
+  -- mapM_ (putStrLn . showTypeless) $ map uninstruction instructions
+  -- mapM_ (putStrLn . show) connectedLists
+  return () 
 
+
+-- https://hackage.haskell.org/package/graphviz-2999.20.1.0/docs/Data-GraphViz-Types-Graph.html#t:DotEdge
 saveGraphFromEdgeList :: [(String,String)] -> String -> IO ()
 saveGraphFromEdgeList pairs title = do
   let valGraph = insertEdgePairs pairs empty -- (empty :: DGraph String ())
@@ -122,7 +124,7 @@ saveGraphFromEdgeList pairs title = do
 exprGraphLabel (Lit v t)   = showTypeless (Lit v t)
 exprGraphLabel abs@(Lam v b t) | typeof abs == Type "assignment" = v
                                | otherwise                       = "λ" ++ v ++ " : "++ show (domain $ unjust' t)
-exprGraphLabel (App l r t) = "(" ++ exprGraphLabel l ++ ") (" ++ exprGraphLabel r ++ ") : " ++ show (unjust' t)
+exprGraphLabel (App l r t) = "App" -- "(" ++ exprGraphLabel l ++ " " ++ exprGraphLabel r ++ ")"
 
 consConnectedList (Lit v t) = []
 consConnectedList (Lam v b t) = (exprGraphLabel (Lam v b t),exprGraphLabel b) : consConnectedList b
