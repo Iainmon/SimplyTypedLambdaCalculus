@@ -113,9 +113,14 @@ debug file = do
   -- mapM_ (\p -> saveGraphFromEdgeList (snd p) (show $ fst p)) $ indexify connectedLists
   -- mapM_ (putStrLn . showTypeless) $ map uninstruction instructions
   -- mapM_ (putStrLn . show) connectedLists
-  spawnProcess "/usr/local/bin/python3.9" ["print_lambda_graph.py", encode result]
+  mapM_ (\p -> flip saveGraph (snd p) (show $ fst p)) $ indexify vals
+  saveGraph "result" result
   return () 
 
+saveGraph :: String -> Expr -> IO ()
+saveGraph name expr = do
+  spawnProcess "/usr/local/bin/python3.9" ["print_lambda_graph.py", encode expr, name]
+  return ()
 
 -- https://hackage.haskell.org/package/graphviz-2999.20.1.0/docs/Data-GraphViz-Types-Graph.html#t:DotEdge
 saveGraphFromEdgeList :: [(String,String)] -> String -> IO ()

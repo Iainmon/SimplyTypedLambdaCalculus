@@ -81,14 +81,14 @@ def path(p):
 #         print('Saved to: ', path(f'./graphs/{name}.png'))
 #         exit()
 def save(g,name='graph'):
-    g.render(filename='./graphs/g.gv',view=False)
+    g.render(filename=f'./graphs/{name}.gv',view=False)
     try:
         try:
             os.remove(path(f'./graphs/{name}.png'))
         except BaseException:
             t = None
-        os.rename(path('./graphs/g.gv.png'), path(f'./graphs/{name}.png'))
-        os.remove(path('./graphs/g.gv'))
+        os.rename(path(f'./graphs/{name}.gv.png'), path(f'./graphs/{name}.png'))
+        os.remove(path(f'./graphs/{name}.gv'))
     except BaseException:
         print('Saved to: ', path(f'./graphs/{name}.png'))
         exit()
@@ -170,12 +170,8 @@ def graph_from_json(json_string):
 
 
 json_string = sys.argv[1] # r'{"var":"x","body":{"rule":"Lit","name":"x"},"rule":"Lam"}'
-# lambda_expr = lambda_expr_from_json(json_string)
-# lambda_expr
+name = sys.argv[2] if len(sys.argv) > 2 else 'graph'
 g = graph_from_json(json_string)
 
-save(g)
-
-
-
-
+save(g,name=name)
+exit()
