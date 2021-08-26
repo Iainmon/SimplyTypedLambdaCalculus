@@ -97,3 +97,7 @@ putStrLn $ showLisp $ cenc 100 -- chuch encoding, shown in lisp syntax
 ghci> :l Main
 ghci> debug "exprgraph.lc"
 ```
+or
+```bash
+$ ./bin/project exprgraph.lc
+```
