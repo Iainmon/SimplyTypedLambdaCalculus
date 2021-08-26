@@ -4,6 +4,8 @@ import Syntax
 import Parser
 import Typing
 import Evaluation
+import Serialize
+
 import Data.Graph 
 import Data.Graph.DGraph
 import Data.Graph.UGraph

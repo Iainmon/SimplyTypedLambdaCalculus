@@ -14,3 +14,4 @@ executable project
                        ,text
                        ,hashable
                        ,graphviz
+                       ,aeson
